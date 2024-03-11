@@ -2,7 +2,6 @@ package com.example.effectivemobile.test.authentication;
 
 import com.example.effectivemobile.test.authentication.request.AuthenticationRequest;
 import com.example.effectivemobile.test.authentication.request.ChangePasswordRequest;
-import com.example.effectivemobile.test.authentication.request.OauthPartnerRequest;
 import com.example.effectivemobile.test.authentication.request.RegisterRequest;
 import com.example.effectivemobile.test.authentication.responce.AuthenticationResponse;
 import com.example.effectivemobile.test.entity.bank.account.BankAccount;
@@ -10,14 +9,13 @@ import com.example.effectivemobile.test.entity.user.Role;
 import com.example.effectivemobile.test.entity.user.User;
 import com.example.effectivemobile.test.entity.token.Token;
 import com.example.effectivemobile.test.entity.token.TokenType;
-import com.example.effectivemobile.test.exception.UserIsExsistsRequestException;
-import com.example.effectivemobile.test.exception.UserNotFoundException;
+import com.example.effectivemobile.test.exception.user.UserIsExsistsRequestException;
+import com.example.effectivemobile.test.exception.user.UserNotFoundException;
 import com.example.effectivemobile.test.repository.BankAccountRepository;
 import com.example.effectivemobile.test.repository.TokenRepository;
 import com.example.effectivemobile.test.repository.UserRepository;
 import com.example.effectivemobile.test.service.jwt.JwtService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -25,19 +23,12 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +41,7 @@ public class AuthenticationService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
-  public AuthenticationResponse register(RegisterRequest request) {
+  public ResponseEntity register(RegisterRequest request) {
     if(userRepository.findByEmail(request.getEmail()).isPresent()){throw new UserIsExsistsRequestException("Пользователь с таким email уже существует",request.getEmail());}
     if(userRepository.findByPhone(request.getPhone()).isPresent()){throw new UserIsExsistsRequestException("Пользователь с таким номером телефона уже существует",request.getPhone());}
     if(userRepository.findByLogin(request.getLogin()).isPresent()){throw new UserIsExsistsRequestException("Пользователь с таким логином уже существует",request.getLogin());}
@@ -68,29 +59,17 @@ public class AuthenticationService {
 
     var bankAccount = BankAccount.builder()
             .user(user)
-            .money(request.getInitialAmountBankAccount())
+            .deposit(request.getInitialAmountBankAccount())
             .maxDeposit(request.getInitialAmountBankAccount()*3.07)
             .build();
 
-    var savedUser = userRepository.save(user);
-    var jwtToken = jwtService.generateToken(user);
-    var refreshToken = jwtService.generateRefreshToken(user);
-    var saveUserBankAccount = bankAccountRepository.save(bankAccount);
-    saveUserToken(savedUser, jwtToken);
+    userRepository.save(user);
+    bankAccountRepository.save(bankAccount);
 
-    return AuthenticationResponse.builder()
-        .accessToken(jwtToken)
-            .refreshToken(refreshToken)
-        .build();
+    return new ResponseEntity(HttpStatus.OK);
   }
 
   public AuthenticationResponse authenticate(AuthenticationRequest request) {
-    authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(
-                    request.getLogin(),
-                    request.getPassword()
-            )
-    );
     var user = userRepository.findByLogin(request.getLogin())
             .orElseThrow(()-> new UserNotFoundException(request.getLogin(),"User not found"));
     var jwtToken = jwtService.generateToken(user);
@@ -101,53 +80,6 @@ public class AuthenticationService {
             .accessToken(jwtToken)
             .refreshToken(refreshToken)
             .build();
-  }
-
-    public AuthenticationResponse oauthAuthenticate(OauthPartnerRequest request) {
-    final String jwt;
-    String userEmail;
-
-    jwt = request.getJwtToken();
-    if (!jwtService.validateToken(jwt)){throw new JwtException("Не валидный токен");}
-
-    userEmail = jwtService.getYandexEmail(jwt);
-
-     var user = userRepository.findByEmail(userEmail);
-    if(!user.isPresent()){
-      var saveUser = User.builder()
-              .email(userEmail)
-              .role(Role.USER)
-              .createdAt(Timestamp.valueOf(java.time.LocalDateTime.now()))
-              .password(passwordEncoder.encode("1q2w3e4r")) //to do
-              .build();
-      userRepository.save(saveUser);
-    }
-      UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
-      var jwtToken = jwtService.generateToken(userDetails);
-      var refreshToken = jwtService.generateRefreshToken(userDetails);
-      revokeAllUserTokens(user.get());
-      saveUserToken(user.get(), jwtToken);
-      /*  authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                )
-        );*/
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                userDetails,
-                null,
-                userDetails.getAuthorities()
-        );/*
-        authToken.setDetails(
-                new WebAuthenticationDetailsSource().buildDetails(request)
-        );*/
-      Authentication authentication = authToken;
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-      return AuthenticationResponse.builder()
-              .accessToken(jwtToken)
-              .refreshToken(refreshToken)
-              .build();
   }
   
   public ResponseEntity changePassword (ChangePasswordRequest changePasswordRequest){

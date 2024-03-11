@@ -1,8 +1,7 @@
 package com.example.effectivemobile.test.transaction;
 
-import com.example.effectivemobile.test.authentication.request.RegisterRequest;
-import com.example.effectivemobile.test.service.TransactionService;
-import com.example.effectivemobile.test.transaction.request.TransactionRequest;
+import com.example.effectivemobile.test.service.MoneyTransactionService;
+import com.example.effectivemobile.test.transaction.request.MoneyTransactionRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,17 +13,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/transaction")
 @RequiredArgsConstructor
-public class TransactionController {
+public class MoneyTransactionController {
 
-    private TransactionService transactionService;
+    private MoneyTransactionService transactionService;
 
     @Autowired
-    public TransactionController(TransactionService transactionService) {
+    public MoneyTransactionController(MoneyTransactionService transactionService) {
         this.transactionService = transactionService;
     }
 
     @PostMapping
-    public ResponseEntity<String> transactionToUser( @RequestBody TransactionRequest transactionRequest){
-            return ResponseEntity.ok(transactionService.register(request));
+    public ResponseEntity<String> transactionToUser( @RequestBody MoneyTransactionRequest transactionRequest){
+            return ResponseEntity.ok(transactionService.moneyTransaction(transactionRequest));
     }
 }

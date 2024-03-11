@@ -1,4 +1,4 @@
-package com.example.effectivemobile.test.authentication.request;
+package com.example.effectivemobile.test.transaction.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class OauthPartnerRequest {
-    private String jwtToken;
+public class MoneyTransactionRequest {
+    private String userEmail;
+    private Double amountOfMoney;
 }

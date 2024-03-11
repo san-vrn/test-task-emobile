@@ -1,4 +1,4 @@
-package com.example.effectivemobile.test.exception;
+package com.example.effectivemobile.test.exception.user;
 
 public class UserNotFoundException extends  RuntimeException{
     private String userEmail;

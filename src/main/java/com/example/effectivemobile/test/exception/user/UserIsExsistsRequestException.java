@@ -1,6 +1,4 @@
-package com.example.effectivemobile.test.exception;
-
-import org.springframework.http.HttpStatus;
+package com.example.effectivemobile.test.exception.user;
 
 public class UserIsExsistsRequestException extends  RuntimeException{
     private String userEmail;

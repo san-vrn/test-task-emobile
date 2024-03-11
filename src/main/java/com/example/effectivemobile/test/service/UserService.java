@@ -14,7 +14,7 @@ import java.util.Optional;
 @Transactional
 public class UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserService(UserRepository userRepository) {
@@ -24,6 +24,7 @@ public class UserService {
     public List<User> listAll(){
         return userRepository.findAll();
     }
+    public Optional<User> findByUserId(Long id){return userRepository.findById(id);}
     public Optional<User> findByUserEmail(String email){return userRepository.findByEmail(email);}
     public Optional<User> findByPhone(String phone){return userRepository.findByPhone(phone);}
     public Optional<List<User>> findByUserFullName(String fullName){return userRepository.findByFullName(fullName);}

@@ -1,7 +1,6 @@
-package com.example.effectivemobile.test.exception.handler;
+package com.example.effectivemobile.test.exception.user;
 
-import com.example.effectivemobile.test.exception.UserIsExsistsRequestException;
-import com.example.effectivemobile.test.exception.UserNotFoundException;
+import com.example.effectivemobile.test.exception.CustomException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +14,9 @@ import java.time.ZonedDateTime;
 
 @ControllerAdvice
 @Slf4j
-public class CustomExceptionHandler {
+public class CustomUserExceptionHandler {
 
-    Logger logger = LoggerFactory.getLogger(CustomExceptionHandler.class.getName());
+    Logger logger = LoggerFactory.getLogger(CustomUserExceptionHandler.class.getName());
     @ExceptionHandler(value = {UserIsExsistsRequestException.class})
     public ResponseEntity<Object> userIsExsistsRequestExceptionHandle(UserIsExsistsRequestException e){
         HttpStatus badRequest = HttpStatus.BAD_REQUEST;

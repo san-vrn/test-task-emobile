@@ -20,12 +20,12 @@ public class BankAccount {
     private Long id;
 
     @Column
-    private Double money;
+    private Double deposit;
 
     @Column
     private Double maxDeposit;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
 }

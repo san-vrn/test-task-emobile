@@ -1,4 +1,4 @@
-package com.example.effectivemobile.test.exception.handler;
+package com.example.effectivemobile.test.exception;
 
 import org.springframework.http.HttpStatus;
 
