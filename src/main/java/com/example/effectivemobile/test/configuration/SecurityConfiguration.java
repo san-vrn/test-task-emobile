@@ -44,11 +44,9 @@ public class SecurityConfiguration {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req ->
-                        req.requestMatchers(WHITE_LIST_URL)
-                                .permitAll()
+                        req.requestMatchers(WHITE_LIST_URL).permitAll()
                                 .requestMatchers(GET, "/api/v1/test/**").hasAnyRole(USER.name())
-                                .anyRequest()
-                                .authenticated()
+                                .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider)
