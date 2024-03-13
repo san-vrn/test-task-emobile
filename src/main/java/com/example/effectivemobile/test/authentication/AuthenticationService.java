@@ -1,7 +1,6 @@
 package com.example.effectivemobile.test.authentication;
 
 import com.example.effectivemobile.test.authentication.request.AuthenticationRequest;
-import com.example.effectivemobile.test.authentication.request.ChangePasswordRequest;
 import com.example.effectivemobile.test.authentication.request.RegisterRequest;
 import com.example.effectivemobile.test.authentication.responce.AuthenticationResponse;
 import com.example.effectivemobile.test.entity.bank.account.BankAccount;
@@ -80,12 +79,6 @@ public class AuthenticationService {
             .accessToken(jwtToken)
             .refreshToken(refreshToken)
             .build();
-  }
-  
-  public ResponseEntity changePassword (ChangePasswordRequest changePasswordRequest){
-    // TODO: 08.12.2023
-    ResponseEntity responseEntity = new ResponseEntity(HttpStatus.OK);
-    return responseEntity;
   }
 
   private void saveUserToken(User user, String jwtToken) {

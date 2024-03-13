@@ -1,7 +1,6 @@
 package com.example.effectivemobile.test.authentication;
 
 import com.example.effectivemobile.test.authentication.request.AuthenticationRequest;
-import com.example.effectivemobile.test.authentication.request.ChangePasswordRequest;
 import com.example.effectivemobile.test.authentication.request.RegisterRequest;
 import com.example.effectivemobile.test.authentication.responce.AuthenticationResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,13 +31,6 @@ public class AuthenticationController {
     return ResponseEntity.ok(service.authenticate(request));
   }
 
-  @PostMapping("/changepass")
-  public ResponseEntity changePassword(
-          @RequestBody ChangePasswordRequest request
-  ) {
-    return ResponseEntity.ok(service.changePassword(request));
-  }
-
   @PostMapping("/refresh-token")
   public void refreshToken(
       HttpServletRequest request,
@@ -46,6 +38,4 @@ public class AuthenticationController {
   ) throws IOException {
     service.refreshToken(request, response);
   }
-
-
 }
