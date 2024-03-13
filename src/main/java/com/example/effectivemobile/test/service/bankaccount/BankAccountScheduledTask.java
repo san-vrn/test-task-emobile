@@ -1,4 +1,4 @@
-package com.example.effectivemobile.test.service;
+package com.example.effectivemobile.test.service.bankaccount;
 
 import com.example.effectivemobile.test.entity.bank.account.BankAccount;
 import org.springframework.scheduling.annotation.Scheduled;

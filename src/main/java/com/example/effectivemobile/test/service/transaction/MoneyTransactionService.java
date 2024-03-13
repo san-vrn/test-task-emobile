@@ -1,13 +1,13 @@
-package com.example.effectivemobile.test.service;
+package com.example.effectivemobile.test.service.transaction;
 
 import com.example.effectivemobile.test.exception.user.UserNotFoundException;
-import com.example.effectivemobile.test.transaction.request.MoneyTransactionRequest;
+import com.example.effectivemobile.test.service.bankaccount.BankAccountService;
+import com.example.effectivemobile.test.service.user.UserService;
+import com.example.effectivemobile.test.service.transaction.request.MoneyTransactionRequest;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 @Transactional

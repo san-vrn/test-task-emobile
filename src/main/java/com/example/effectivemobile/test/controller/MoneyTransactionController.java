@@ -1,7 +1,7 @@
-package com.example.effectivemobile.test.transaction;
+package com.example.effectivemobile.test.controller;
 
-import com.example.effectivemobile.test.service.MoneyTransactionService;
-import com.example.effectivemobile.test.transaction.request.MoneyTransactionRequest;
+import com.example.effectivemobile.test.service.transaction.MoneyTransactionService;
+import com.example.effectivemobile.test.service.transaction.request.MoneyTransactionRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.example.effectivemobile.test.service;
+package com.example.effectivemobile.test.service.bankaccount;
 
 import com.example.effectivemobile.test.entity.bank.account.BankAccount;
 import com.example.effectivemobile.test.entity.user.User;
@@ -7,8 +7,6 @@ import com.example.effectivemobile.test.exception.user.UserNotFoundException;
 import com.example.effectivemobile.test.repository.BankAccountRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

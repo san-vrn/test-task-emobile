@@ -1,4 +1,4 @@
-package com.example.effectivemobile.test.transaction.request;
+package com.example.effectivemobile.test.service.transaction.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

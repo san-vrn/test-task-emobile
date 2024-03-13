@@ -1,7 +1,7 @@
 package com.example.effectivemobile.test.configuration;
 
-import com.example.effectivemobile.test.service.BankAccountScheduledTask;
-import com.example.effectivemobile.test.service.BankAccountService;
+import com.example.effectivemobile.test.service.bankaccount.BankAccountScheduledTask;
+import com.example.effectivemobile.test.service.bankaccount.BankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
